@@ -1,7 +1,3 @@
-const test = document.querySelector("#test");
-
-test.textContent = "hello and welcome from js"
-
 const add = function(a, b) {
   return a + b;
 }
