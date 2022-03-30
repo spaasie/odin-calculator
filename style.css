@@ -1,3 +1,13 @@
+@font-face {
+  /* Sizenko Alexander */
+  /* Style-7 */
+  /* http://www.styleseven.com */
+  /* Created: October 7 2008 */
+  /* https://www.1001fonts.com/digital-7-font.html */
+  font-family: "Digital-7 Mono";
+  src: url("fonts/digital-7.mono.ttf") format("truetype");
+}
+
 header h1 {
   color: aquamarine;
 }
@@ -12,8 +22,9 @@ header h1 {
 }
 
 .calc-display {
+  font-family: "Digital-7 Mono";
+  font-size: 2rem;
   background-color: #A8FFC0;
-  font-family: monospace; /* add digital font */
   margin-bottom: 10px;
   padding: 5px;
   border-radius: 5px;
