@@ -35,15 +35,26 @@ const operate = function(operator, a, b) {
 }
 
 const txtContent = function(e) {
-  console.log(e.textContent)
+  // console.log(e.textContent)
   return e.textContent;
 }
 
 const updateDisplay = function() {
-  if (txtContent(this) == "C") {
-    display.textContent = "";
-  } else {
-    display.textContent += txtContent(this);
+  switch (txtContent(this)) {
+    case "C":
+      display.textContent = "";
+      break;
+    case "÷":
+    case "×":
+    case "−":
+    case "+":
+      console.log("ignore")
+      break;
+    case "=":
+      console.log("give answers plz:");
+      break;
+    default:
+      display.textContent += txtContent(this);
   }
 }
 
