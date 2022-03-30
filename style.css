@@ -47,13 +47,14 @@ header h1 {
     inset -4px -4px 2px rgba(255, 255, 255, 0.25);
 }
 
-.calc-btns button:active {
-  scale: 0.98;
+.calc-btns button:hover {
+  background-color: #ecffa8;
+  cursor: pointer;
 }
 
-.calc-btns button:hover {
+.calc-btns button:active {
+  scale: 0.98;
   background-color: #A8FFC0;
-  cursor: pointer;
 }
 
 .calc-btns {
