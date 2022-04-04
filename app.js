@@ -41,39 +41,56 @@ const txtContent = function(e) {
 
 let a = 0;
 let b = 0;
+let answer = 0;
 let operator;
 const updateDisplay = function() {
+  display.removeAttribute("style");
   switch (txtContent(this)) {
     case "C":
       a = 0;
       b = 0;
+      answer = 0;
       operator = null;
       display.textContent = "0";
       break;
     case "÷":
     case "×":
     case "−":
+      a = answer;
+      b = +display.textContent;
+      operator = "subtract";
+      answer = operate(operator, a, b);
+      display.textContent = answer;
+      break;
     case "+":
+      a = answer;
       b = +display.textContent;
       operator = "add";
-      a = operate(operator, a, b);
-      display.textContent = a;
+      answer = operate(operator, a, b);
+      display.textContent = answer;
 
       break;
     case "=":
       if (!operator) {
         display.textContent = "ERROR 4";
+        display.style.textAlign = "left";
       } else {
-        b = +display.textContent;
-        a = operate(operator, a, b);
-        display.textContent = a;
+        if (!(display.textContent == answer)) {
+          b = +display.textContent;
+        }
+        a = answer;
+        console.log("a:", a);
+        console.log("b:", b);
+        console.log("ans:", answer);
+        answer = operate(operator, a, b);
+        display.textContent = answer;
       }
       break;
     default:
       // if the display's 1st digit is 0 then empty sting
       if (display.textContent[0] == "0") {
         display.textContent = "";
-      } else if (display.textContent == a) {
+      } else if (display.textContent == answer) {
         display.textContent = "";
       } 
       display.textContent += txtContent(this);
