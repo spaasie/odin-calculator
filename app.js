@@ -48,9 +48,11 @@ const updateCalculation = function() {
     answer = operate(operator, a, b);
     numArray = [];
     numArray.push(answer);
-    if (answer == "Infinity") {
+    if (answer == "Infinity" || !answer) {
       error();
     } else {
+      console.log(answer)
+      console.log(typeof(answer))
       display.textContent = answer;
     }
   }
@@ -59,11 +61,12 @@ const updateCalculation = function() {
 
 const error = function() {
   display.textContent = "ERROR 4";
-  display.style.textAlign = "left";
   clear();
+  display.style.textAlign = "left";
 }
 
 const clear = function() {
+  display.removeAttribute("style");
   a = 0;
   b = 0;
   answer = 0;
@@ -79,42 +82,45 @@ let answer = 0;
 let operator;
 let clearDisplay = true;
 
-const updateDisplay = function() {
+const updateDisplay = function(value) {
   display.removeAttribute("style");
-  switch (btnValue(this)) {
+  switch (value) {
     case ".":
       if (!(display.textContent.includes("."))) {
-        display.textContent += txtContent(this);
+        display.textContent += value; 
       }
       break;
-    case "C":
+    case "Delete":
       clear();
       display.textContent = "0";
       break;
     case "Backspace":
-      if (display.textContent.length > 1) {
+      if (display.textContent == "ERROR 4") {
+        display.textContent = "0";
+      }
+      else if (display.textContent.length > 1) {
         display.textContent = display.textContent.slice(0, -1);
       } else {
         display.textContent = "0";
       }
       break;
-    case "divide":
+    case "/":
       updateCalculation();
       operator = "divide";
       break;
-    case "multiply":
+    case "*":
       updateCalculation();
       operator = "multiply";
       break;
-    case "subtract":
+    case "-":
       updateCalculation();
       operator = "subtract";
       break;
-    case "add":
+    case "+":
       updateCalculation();
       operator = "add";
       break;
-    case "equal":
+    case "Enter":
       if (!operator) {
         error();
       } else {
@@ -129,7 +135,7 @@ const updateDisplay = function() {
           answer = operate(operator, a, b);
         }
 
-        if (answer == "Infinity"){
+        if (answer == "Infinity" || !answer){
           error();
         } else {
           display.textContent = answer;
@@ -145,17 +151,34 @@ const updateDisplay = function() {
         display.textContent = "";
         clearDisplay = false;
       } 
-      display.textContent += txtContent(this);
+      display.textContent += value; 
   }
 }
 
 btns.forEach(btn => {
-  btn.addEventListener("click", updateDisplay);
+  btn.addEventListener("click", e => {
+    updateDisplay(e.target.value)
+  });
 });
 
+const keyCheck = function(key) {
+  const re = /[0-9\/*\-+]/;
+  switch (true) {
+    case re.test(key):
+    case key == "Enter":
+    case key == "Delete":
+    case key == "Backspace":
+      return true;
+    default:
+      return false;
+  }
+}
+
 document.addEventListener("keydown", e => {
-  console.log(typeof(e.key), e.key)
-  if (/[0-9]/g.exec(e.key)) {
-    console.log("yes", e.key)
+  if (e.key == "/") {
+    e.preventDefault();
+  }
+  if (keyCheck(e.key)) {
+    updateDisplay(e.key);
   }
 })
