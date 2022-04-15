@@ -44,9 +44,22 @@ const updateCalculation = function() {
     answer = operate(operator, a, b);
     numArray = [];
     numArray.push(answer);
-    display.textContent = answer;
+    if (answer == "Infinity") {
+      error();
+    } else {
+      display.textContent = answer;
+    }
   }
   clearDisplay = true;
+}
+
+const error = function() {
+  display.textContent = "ERROR 4";
+  display.style.textAlign = "left";
+  clearDisplay = true;
+  numArray = [];
+  answer = 0;
+  operator = null;
 }
 
 let a = 0;
@@ -71,7 +84,6 @@ const updateDisplay = function() {
       operator = null;
       display.textContent = "0";
       break;
-
     case "÷":
       updateCalculation();
       operator = "divide";
@@ -90,9 +102,7 @@ const updateDisplay = function() {
       break;
     case "=":
       if (!operator) {
-        display.textContent = "ERROR 4";
-        display.style.textAlign = "left";
-        clearDisplay = true;
+        error();
       } else {
         if (!(display.textContent == numArray[0])) {
           numArray.push(+display.textContent);
@@ -104,7 +114,12 @@ const updateDisplay = function() {
         if (numArray.length == 2) {
           answer = operate(operator, a, b);
         }
-        display.textContent = answer;
+
+        if (answer == "Infinity"){
+          error();
+        } else {
+          display.textContent = answer;
+        }
         numArray = [];
         clearDisplay = true;
         operator = null;
