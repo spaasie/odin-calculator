@@ -78,6 +78,7 @@ let numArray = [];
 let answer = 0;
 let operator;
 let clearDisplay = true;
+
 const updateDisplay = function() {
   display.removeAttribute("style");
   switch (btnValue(this)) {
@@ -89,6 +90,13 @@ const updateDisplay = function() {
     case "C":
       clear();
       display.textContent = "0";
+      break;
+    case "Backspace":
+      if (display.textContent.length > 1) {
+        display.textContent = display.textContent.slice(0, -1);
+      } else {
+        display.textContent = "0";
+      }
       break;
     case "divide":
       updateCalculation();
@@ -144,3 +152,10 @@ const updateDisplay = function() {
 btns.forEach(btn => {
   btn.addEventListener("click", updateDisplay);
 });
+
+document.addEventListener("keydown", e => {
+  console.log(typeof(e.key), e.key)
+  if (/[0-9]/g.exec(e.key)) {
+    console.log("yes", e.key)
+  }
+})
