@@ -41,57 +41,71 @@ const txtContent = function(e) {
 
 let a = 0;
 let b = 0;
+let numArray = [];
 let answer = 0;
 let operator;
+let clearDisplay = true;
 const updateDisplay = function() {
   display.removeAttribute("style");
   switch (txtContent(this)) {
+    case ".":
+      if (!(display.textContent.includes("."))) {
+        display.textContent += txtContent(this);
+      }
+      break;
     case "C":
       a = 0;
       b = 0;
       answer = 0;
+      numArray = [];
       operator = null;
       display.textContent = "0";
       break;
     case "÷":
     case "×":
     case "−":
-      a = answer;
-      b = +display.textContent;
-      operator = "subtract";
-      answer = operate(operator, a, b);
-      display.textContent = answer;
-      break;
     case "+":
-      a = answer;
-      b = +display.textContent;
+      numArray.push(+display.textContent);
+      console.log(numArray)
+      if (numArray.length == 2) {
+        a = numArray[0];
+        b = numArray[1];
+        answer = operate(operator, a, b);
+        numArray = [];
+        numArray.push(answer)
+        display.textContent = answer;
+      }
       operator = "add";
-      answer = operate(operator, a, b);
-      display.textContent = answer;
-
+      clearDisplay = true;
       break;
     case "=":
       if (!operator) {
         display.textContent = "ERROR 4";
         display.style.textAlign = "left";
+        clearDisplay = true;
       } else {
-        if (!(display.textContent == answer)) {
-          b = +display.textContent;
+        if (!(display.textContent == numArray[0])) {
+          numArray.push(+display.textContent);
+          b = numArray[1];
         }
-        a = answer;
+        a = numArray[0];
+        // a = answer;
+        
         console.log("a:", a);
         console.log("b:", b);
         console.log("ans:", answer);
         answer = operate(operator, a, b);
         display.textContent = answer;
+        numArray = [];
+        // numArray.push(answer);
+        console.log(numArray)
       }
       break;
     default:
       // if the display's 1st digit is 0 then empty sting
-      if (display.textContent[0] == "0") {
+      if (display.textContent[0] == "0" || clearDisplay) {
         display.textContent = "";
-      } else if (display.textContent == answer) {
-        display.textContent = "";
+        clearDisplay = false;
       } 
       display.textContent += txtContent(this);
   }
