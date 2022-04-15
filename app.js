@@ -36,6 +36,10 @@ const txtContent = function(e) {
   return e.textContent;
 }
 
+const btnValue = function(e) {
+  return e.value;
+}
+
 const updateCalculation = function() {
   numArray.push(+display.textContent);
   if (numArray.length == 2) {
@@ -56,10 +60,16 @@ const updateCalculation = function() {
 const error = function() {
   display.textContent = "ERROR 4";
   display.style.textAlign = "left";
-  clearDisplay = true;
-  numArray = [];
+  clear();
+}
+
+const clear = function() {
+  a = 0;
+  b = 0;
   answer = 0;
+  numArray = [];
   operator = null;
+  clearDisplay = true;
 }
 
 let a = 0;
@@ -70,37 +80,33 @@ let operator;
 let clearDisplay = true;
 const updateDisplay = function() {
   display.removeAttribute("style");
-  switch (txtContent(this)) {
+  switch (btnValue(this)) {
     case ".":
       if (!(display.textContent.includes("."))) {
         display.textContent += txtContent(this);
       }
       break;
     case "C":
-      a = 0;
-      b = 0;
-      answer = 0;
-      numArray = [];
-      operator = null;
+      clear();
       display.textContent = "0";
       break;
-    case "÷":
+    case "divide":
       updateCalculation();
       operator = "divide";
       break;
-    case "×":
+    case "multiply":
       updateCalculation();
       operator = "multiply";
       break;
-    case "−":
+    case "subtract":
       updateCalculation();
       operator = "subtract";
       break;
-    case "+":
+    case "add":
       updateCalculation();
       operator = "add";
       break;
-    case "=":
+    case "equal":
       if (!operator) {
         error();
       } else {
