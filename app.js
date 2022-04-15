@@ -1,8 +1,6 @@
 const display = document.querySelector(".calc-display");
 const btns = document.querySelectorAll(".calc-btns button");
 
-// display.textContent
-
 const add = function(a, b) {
   return a + b;
 }
@@ -35,8 +33,20 @@ const operate = function(operator, a, b) {
 }
 
 const txtContent = function(e) {
-  // console.log(e.textContent)
   return e.textContent;
+}
+
+const updateCalculation = function() {
+  numArray.push(+display.textContent);
+  if (numArray.length == 2) {
+    a = numArray[0];
+    b = numArray[1];
+    answer = operate(operator, a, b);
+    numArray = [];
+    numArray.push(answer);
+    display.textContent = answer;
+  }
+  clearDisplay = true;
 }
 
 let a = 0;
@@ -61,22 +71,22 @@ const updateDisplay = function() {
       operator = null;
       display.textContent = "0";
       break;
+
     case "÷":
+      updateCalculation();
+      operator = "divide";
+      break;
     case "×":
+      updateCalculation();
+      operator = "multiply";
+      break;
     case "−":
+      updateCalculation();
+      operator = "subtract";
+      break;
     case "+":
-      numArray.push(+display.textContent);
-      console.log(numArray)
-      if (numArray.length == 2) {
-        a = numArray[0];
-        b = numArray[1];
-        answer = operate(operator, a, b);
-        numArray = [];
-        numArray.push(answer)
-        display.textContent = answer;
-      }
+      updateCalculation();
       operator = "add";
-      clearDisplay = true;
       break;
     case "=":
       if (!operator) {
@@ -88,17 +98,16 @@ const updateDisplay = function() {
           numArray.push(+display.textContent);
           b = numArray[1];
         }
+
         a = numArray[0];
-        // a = answer;
-        
-        console.log("a:", a);
-        console.log("b:", b);
-        console.log("ans:", answer);
-        answer = operate(operator, a, b);
+
+        if (numArray.length == 2) {
+          answer = operate(operator, a, b);
+        }
         display.textContent = answer;
         numArray = [];
-        // numArray.push(answer);
-        console.log(numArray)
+        clearDisplay = true;
+        operator = null;
       }
       break;
     default:
