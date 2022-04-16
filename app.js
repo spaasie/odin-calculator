@@ -40,19 +40,36 @@ const btnValue = function(e) {
   return e.value;
 }
 
+const isFloat = function(value) {
+  if (
+    typeof value == "number" &&
+    !Number.isNaN(value) &&
+    !Number.isInteger(value) 
+  ) {
+    return true;
+  }
+  return false;
+}
+
 const updateCalculation = function() {
   numArray.push(+display.textContent);
   if (numArray.length == 2) {
     a = numArray[0];
     b = numArray[1];
     answer = operate(operator, a, b);
+    if (answer.toString().length >= 12) {
+      // try get so that total num of digits = 12
+      if (isFloat(answer)) {
+        const decimalPlace = answer.toString().indexOf(".");
+        const toDecimal = 11 - decimalPlace;
+        answer = Number.parseFloat(answer).toFixed(toDecimal);
+      }
+    } 
     numArray = [];
     numArray.push(answer);
     if (answer == "Infinity" || !answer) {
       error();
     } else {
-      console.log(answer)
-      console.log(typeof(answer))
       display.textContent = answer;
     }
   }
@@ -83,7 +100,7 @@ let operator;
 let clearDisplay = true;
 
 const updateDisplay = function(value) {
-  display.removeAttribute("style");
+  // display.removeAttribute("style");
   switch (value) {
     case ".":
       if (!(display.textContent.includes("."))) {
@@ -95,7 +112,7 @@ const updateDisplay = function(value) {
       display.textContent = "0";
       break;
     case "Backspace":
-      if (display.textContent == "ERROR 4") {
+      if (display.textContent == "ERROR 4" || display.textContent == "01134") {
         display.textContent = "0";
       }
       else if (display.textContent.length > 1) {
@@ -151,6 +168,10 @@ const updateDisplay = function(value) {
         display.textContent = "";
         clearDisplay = false;
       } 
+      if (display.textContent.length >= 12) {
+        value = "";
+      }
+      display.removeAttribute("style");
       display.textContent += value; 
   }
 }
@@ -162,7 +183,7 @@ btns.forEach(btn => {
 });
 
 const keyCheck = function(key) {
-  const re = /[0-9\/*\-+]/;
+  const re = /[0-9\/*\-+.]/;
   switch (true) {
     case re.test(key):
     case key == "Enter":
